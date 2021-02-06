@@ -1,9 +1,13 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import useKeyPress from "../hooks/useKeyPress";
+
+//添加node.js插件
+const { remote } = window.require("electron");
+const { Menu, MenuItem } = remote;
 
 const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
   const [editStatus, setEditStatus] = useState(false);
@@ -16,6 +20,40 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
       onFileDelete(editItem.id);
     }
   };
+  useEffect(() => {
+    const menu = new Menu();
+    menu.append(
+      new MenuItem({
+        label: "打开",
+        click: () => {
+          console.log("clikong file");
+        },
+      })
+    );
+    menu.append(
+      new MenuItem({
+        label: "重命名",
+        click: () => {
+          console.log("renmae file");
+        },
+      })
+    );
+    menu.append(
+      new MenuItem({
+        label: "删除",
+        click: () => {
+          console.log("delet file");
+        },
+      })
+    );
+    const handleContextMenu = (e) => {
+      menu.popup({ window: remote.getCurrentWindow() });
+    };
+    window.addEventListener("contextmenu", handleContextMenu);
+    return () => {
+      window.removeEventListener("contextmenu", handleContextMenu);
+    };
+  });
   const enterPressed = useKeyPress(13); //代表enter键
   const escPressed = useKeyPress(27); //代表esc键
   //键盘响应事件
@@ -23,7 +61,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
     const editItem = files.find((file) => file.id === editStatus);
     //当输入标题为空时不能进行enter操作
     if (enterPressed && editStatus && value.trim() !== "") {
-      onSaveEdit(editItem.id, value);
+      onSaveEdit(editItem.id, value, editItem.isNew);
       setEditStatus(false);
       setValue("");
     }
@@ -53,7 +91,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
   //   }, [editStatus]);
   useEffect(() => {
     const newFile = files.find((file) => file.isNew);
-    console.log(newFile);
+    // console.log(newFile);
     if (newFile) {
       setEditStatus(newFile.id);
       setValue(newFile.title);
