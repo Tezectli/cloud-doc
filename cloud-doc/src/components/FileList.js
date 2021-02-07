@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import useKeyPress from "../hooks/useKeyPress";
+import usecontextMenu from "../hooks/useContextMenu";
 
 //添加node.js插件
 const { remote } = window.require("electron");
@@ -20,40 +21,64 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
       onFileDelete(editItem.id);
     }
   };
-  useEffect(() => {
-    const menu = new Menu();
-    menu.append(
-      new MenuItem({
+  const clickItem = usecontextMenu(
+    [
+      {
         label: "打开",
         click: () => {
-          console.log("clikong file");
+          //取得对应位置的参数
+          console.log("clikong file", clickItem.current);
         },
-      })
-    );
-    menu.append(
-      new MenuItem({
+      },
+      {
         label: "重命名",
         click: () => {
           console.log("renmae file");
         },
-      })
-    );
-    menu.append(
-      new MenuItem({
+      },
+      {
         label: "删除",
         click: () => {
           console.log("delet file");
         },
-      })
-    );
-    const handleContextMenu = (e) => {
-      menu.popup({ window: remote.getCurrentWindow() });
-    };
-    window.addEventListener("contextmenu", handleContextMenu);
-    return () => {
-      window.removeEventListener("contextmenu", handleContextMenu);
-    };
-  });
+      },
+    ],
+    ".file-list"
+  );
+  // useEffect(() => {
+  //   const menu = new Menu();
+  //   menu.append(
+  //     new MenuItem({
+  //       label: "打开",
+  //       click: () => {
+  //         console.log("clikong file");
+  //       },
+  //     })
+  //   );
+  //   menu.append(
+  //     new MenuItem({
+  //       label: "重命名",
+  //       click: () => {
+  //         console.log("renmae file");
+  //       },
+  //     })
+  //   );
+  //   menu.append(
+  //     new MenuItem({
+  //       label: "删除",
+  //       click: () => {
+  //         console.log("delet file");
+  //       },
+  //     })
+  //   );
+  //   const handleContextMenu = (e) => {
+  //     menu.popup({ window: remote.getCurrentWindow() });
+  //   };
+  //   window.addEventListener("contextmenu", handleContextMenu);
+  //   return () => {
+  //     window.removeEventListener("contextmenu", handleContextMenu);
+  //   };
+  // });
   const enterPressed = useKeyPress(13); //代表enter键
   const escPressed = useKeyPress(27); //代表esc键
   //键盘响应事件
