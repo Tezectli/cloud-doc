@@ -20,7 +20,7 @@ const useContextMenu = (itemArr, targetSelector) => {
     return () => {
       window.removeEventListener("contextmenu", handleContextMenu);
     };
-  }, []);
+  });
   return clickedElement;
 };
 export default useContextMenu;

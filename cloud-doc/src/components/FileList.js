@@ -5,6 +5,7 @@ import { faEdit, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import useKeyPress from "../hooks/useKeyPress";
 import usecontextMenu from "../hooks/useContextMenu";
+import { getParentNode } from "../utils/helper";
 
 //添加node.js插件
 const { remote } = window.require("electron");
@@ -27,19 +28,25 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
         label: "打开",
         click: () => {
           //取得对应位置的参数
-          console.log("clikong file", clickItem.current);
+          const parentElement = getParentNode(clickItem.current, "file-item");
+          if (parentElement) {
+            onFileClick(parentElement.dataset.id);
+          }
         },
       },
       {
         label: "重命名",
         click: () => {
-          console.log("renmae file");
+          const parentElement = getParentNode(clickItem.current, "file-item");
+          setEditStatus(parentElement.dataset.id);
+          setValue(parentElement.dataset.title);
         },
       },
       {
         label: "删除",
         click: () => {
-          console.log("delet file");
+          const parentElement = getParentNode(clickItem.current, "file-item");
+          onFileDelete(parentElement.dataset.id);
         },
       },
     ],
@@ -128,6 +135,8 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
         <li
           className="list-group-item bg-light d-flex align-items-center file-item"
           key={file.id}
+          data-id={file.id}
+          data-title={file.title}
         >
           {file.id !== editStatus && !file.isNew && (
             <>
