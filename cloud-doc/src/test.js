@@ -1,0 +1,10 @@
+const qiniu = require("qiniu");
+const QiniuManager = require("./utils/QiniuManager");
+var accessKey = "vp8-Un6KvnWmRaN3WYY5w1l84rY1nri0ecJ31rq0";
+var secretKey = "fQeEyqUiUX6eXFBY8XggqrQJDHBwD9PtuqvH6t3K";
+var localFile = "C:/Users/apache/Desktop/TestFile 22.md";
+var key = "TestFile 223.md";
+const manager = new QiniuManager(accessKey, secretKey, "reactcloud");
+// manager.uploadFile(key, localFile);
+manager.deleteFile(key);
+// var publicBucketDomain = "qokkmqq9p.hd-bkt.clouddn.com";
