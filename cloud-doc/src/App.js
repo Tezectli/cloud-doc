@@ -15,13 +15,15 @@ import fileHelper from "./utils/fileHelper";
 import { flattenArr, objToArr } from "./utils/helper";
 import BottomBtn from "./components/BottomBtn";
 import TabList from "./components/TabList";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { opendirSync } from "fs";
+import useIpcRenderer from "./hooks/useIpcRenderer";
 //node.js 原生模块引用
 // const electron = require("electron");
 // const app = electron.app;
 const { join, basename, extname, dirname } = window.require("path");
-const { remote } = window.require("electron");
+const { remote, ipcRenderer } = window.require("electron");
 //使用低版本安装包解决store-electron引入报错
 const Store = window.require("electron-store");
 const fileStore = new Store({ name: "Files Data" });
@@ -100,11 +102,13 @@ function App() {
     //   return file;
     // });
     // setFiles(newFiles);
-    const newFile = { ...files[id], body: value };
-    setFiles({ ...files, [id]: newFile });
+    if (value !== files[id].body) {
+      const newFile = { ...files[id], body: value };
+      setFiles({ ...files, [id]: newFile });
 
-    if (!unsavedFilesIDs.includes(id)) {
-      setUnsavedFilesIDs([...unsavedFilesIDs, id]);
+      if (!unsavedFilesIDs.includes(id)) {
+        setUnsavedFilesIDs([...unsavedFilesIDs, id]);
+      }
     }
   };
   //找到激活的文件id
@@ -255,6 +259,11 @@ function App() {
         // console.log(importFilesArr);
       });
   };
+  useIpcRenderer({
+    "create-new-file": createNewFile,
+    "import-file": importFiles,
+    "save-edit-file": saveCurrentFile,
+  });
   return (
     <div className="App container-fluid px-0">
       <div className="row no-gutters">
@@ -312,12 +321,12 @@ function App() {
                   minHeight: "475px",
                 }}
               />
-              <BottomBtn
+              {/* <BottomBtn
                 text="保存"
                 colorClass="btn-secondary"
                 icon={faSave}
                 onBtnclick={saveCurrentFile}
-              />
+              /> */}
             </>
           )}
         </div>
