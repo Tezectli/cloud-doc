@@ -1,4 +1,6 @@
 const qiniu = require("qiniu");
+const axios = require("axios");
+const fs = require("fs");
 class QiniuManager {
   constructor(accessKey, secretKey, bucket) {
     this.mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
@@ -71,6 +73,32 @@ class QiniuManager {
       }
     });
   }
+  //下载文件管理
+  downloadFile(key, downloadPath) {
+    return this.generateDownloadLink(key)
+      .then((link) => {
+        const timeStamp = new Date().getTime();
+        const url = `${link}?timeStamp=${timeStamp}`;
+        return axios({
+          url,
+          method: "GET",
+          responseType: "stream",
+          headers: { "Cache-Control": "no-cache" },
+        });
+      })
+      .then((response) => {
+        const writer = fs.createWriteStream(downloadPath);
+        response.data.pipe(writer);
+        return new Promise((resolve, reject) => {
+          writer.on("finish", resolve);
+          writer.on("error", reject);
+        });
+      })
+      .catch((err) => {
+        return Promise.reject({ err: err.response });
+      });
+  }
+
   _handleCallback(resolve, reject) {
     return (respErr, respBody, respInfo) => {
       if (respErr) {
