@@ -20,37 +20,71 @@ class QiniuManager {
     const putExtra = new qiniu.form_up.PutExtra();
 
     // 文件上传
-    formUploader.putFile(uploadToken, key, localFilePath, putExtra, function (
-      respErr,
-      respBody,
-      respInfo
-    ) {
-      if (respErr) {
-        throw respErr;
-      }
-
-      if (respInfo.statusCode == 200) {
-        console.log(respBody);
-      } else {
-        console.log(respInfo.statusCode);
-        console.log(respBody);
-      }
+    return new Promise((resolve, reject) => {
+      formUploader.putFile(
+        uploadToken,
+        key,
+        localFilePath,
+        putExtra,
+        this._handleCallback(resolve, reject)
+      );
     });
   }
   deleteFile(key) {
-    this.bucketManager.delete(this.bucket, key, function (
-      err,
-      respBody,
-      respInfo
-    ) {
-      if (err) {
-        console.log(err);
-        //throw err;
+    return new Promise((resolve, reject) => {
+      this.bucketManager.delete(
+        this.bucket,
+        key,
+        this._handleCallback(resolve, reject)
+      );
+    });
+  }
+  //获取下载链接
+  getBucketDomain() {
+    const reqURL = `http://api.qiniu.com/v6/domain/list?tbl=${this.bucket}`;
+    const digest = qiniu.util.generateAccessToken(this.mac, reqURL);
+    return new Promise((resolve, reject) => {
+      qiniu.rpc.postWithoutForm(
+        reqURL,
+        digest,
+        this._handleCallback(resolve, reject)
+      );
+    });
+  }
+  generateDownloadLink(key) {
+    // this.getBucketDomain().then()
+    const domainPromise = this.publicBucketDomain
+      ? Promise.resolve([this.publicBucketDomain])
+      : this.getBucketDomain();
+    return domainPromise.then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        const pattern = /^https?/;
+        this.publicBucketDomain = pattern.test(data[0])
+          ? data[0]
+          : `http://${data[0]}`;
+        return this.bucketManager.publicDownloadUrl(
+          this.publicBucketDomain,
+          key
+        );
       } else {
-        console.log(respInfo.statusCode);
-        console.log(respBody);
+        throw Error("域名未找到，请查看存储空间是否过期");
       }
     });
+  }
+  _handleCallback(resolve, reject) {
+    return (respErr, respBody, respInfo) => {
+      if (respErr) {
+        throw respErr;
+      }
+      if (respInfo.statusCode == 200) {
+        resolve(respBody);
+      } else {
+        reject({
+          statusCode: respInfo.statusCode,
+          body: respBody,
+        });
+      }
+    };
   }
 }
 
