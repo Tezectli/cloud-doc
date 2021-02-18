@@ -11,60 +11,25 @@
 
 服务端：Node.js + 七牛云 
 
-> 小程序端
 
-![](https://s1.ax1x.com/2020/05/30/tKDCPx.jpg) 
-> 管理端 
-#### 登录/注册
-![](https://s1.ax1x.com/2020/05/30/tKDVqH.jpg) 
-#### 首页 
-![](https://s1.ax1x.com/2020/05/30/tKDcw9.jpg) 
-#### 添加/编辑 
-![](https://s1.ax1x.com/2020/05/30/tKDfW6.jpg) 
-#### 更新：用户管理以及新界面UI设计
+> 应用预览 
+#### 主要页面
+* 单页模式
+![](https://ae01.alicdn.com/kf/Ua3899823c7f642ce99abb120c0e6ad93z.jpg)
+* 预览
+![](https://ae01.alicdn.com/kf/U4071655e8c5240c29c24ff56e30d1f714.jpg)
+* 全屏模式
+![](https://ae01.alicdn.com/kf/Ua6cc4b6770f64f97860b20ff4da34b86m.jpg)
+* 分屏模式
+![](https://ae01.alicdn.com/kf/U66db66e00b4244049ac0d51623e3078f1.jpg)
+#### 导入 
+![](https://ae01.alicdn.com/kf/U89fb2871de34416295bd67b75e5a6446a.jpg)
+#### 新建/编辑 
+![](https://ae01.alicdn.com/kf/Ub82611d49412459792e1313e198e6afba.jpg)
+#### 搜索 
+![](https://ae01.alicdn.com/kf/Ud166307b996d48129fd5e44061d08f81A.jpg)
 
-用户管理首页
-![](https://s1.ax1x.com/2020/06/17/NViaBn.jpg) 
 
-用户修改
-![](https://s1.ax1x.com/2020/06/17/NVid7q.jpg) 
-
-![](https://s1.ax1x.com/2020/06/17/NVi0A0.jpg) 
-
-## 项目结构
-
-```
-WA-Admin
-├─ src
-│  ├─ api        //接口文件  
-│  ├─ icons      //svg图标
-│  ├─ main.js    //路由守卫
-│  ├─ router     //路由管理
-│  ├─ store      //Vuex与缓存设置
-│  ├─ styles     //sass公用样式
-│  ├─ utils      //js封装
-│  └─ views      //所有页面
-│     ├─ About.vue
-│     ├─ Home.vue
-│     ├─ Info
-│     │  ├─ category.vue
-│     │  ├─ dialog         //弹框组件封装
-│     │  │  └─ info.vue 
-│     │  └─ index.vue
-│     ├─ Layout
-│     │  ├─ Components     //导航顶栏，导航侧栏以及主体
-│     │  │  ├─ Header.vue
-│     │  │  ├─ Main.vue
-│     │  │  └─ Nav.vue
-│     │  └─ index.vue
-│     ├─ Login             //登录注册
-│     │  ├─ index.vue
-│     │  ├─ index2.vue
-│     │  └─ index3.vue
-│     └─ User
-│        └─ index.vue
-└─ vue.config.js
-```
 
 ## 安装运行
 
@@ -73,7 +38,5 @@ WA-Admin
 * #### 第二步
     * `npm install`安装依赖
 * #### 第三步
-    * 构建小程序运行服务`npm run dev:mp-weixin`
-    * 构建管理端 `npm run serve`
-* #### 第四部
-    * 在微信小程序开发工具中预览
+    * 构建管理端 `npm run dev`
+
