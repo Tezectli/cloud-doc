@@ -14,16 +14,22 @@
 
 > 应用预览 
 #### 主要页面
-* 单页模式
+* 单页模式 
+
 ![](https://ae01.alicdn.com/kf/Ua3899823c7f642ce99abb120c0e6ad93z.jpg)
-* 预览
+* 预览 
+
 ![](https://ae01.alicdn.com/kf/U4071655e8c5240c29c24ff56e30d1f714.jpg)
-* 全屏模式
+* 全屏模式 
+
 ![](https://ae01.alicdn.com/kf/Ua6cc4b6770f64f97860b20ff4da34b86m.jpg)
-* 分屏模式
-![](https://ae01.alicdn.com/kf/U66db66e00b4244049ac0d51623e3078f1.jpg)
+* 分屏模式 
+
+![](https://ae01.alicdn.com/kf/U66db66e00b4244049ac0d51623e3078f1.jpg) 
+
+
 #### 导入 
-![](https://ae01.alicdn.com/kf/U89fb2871de34416295bd67b75e5a6446a.jpg)
+![](https://ae01.alicdn.com/kf/Uda8dc9e49e3b4669b89a6698cae525092.jpg)
 #### 新建/编辑 
 ![](https://ae01.alicdn.com/kf/Ub82611d49412459792e1313e198e6afba.jpg)
 #### 搜索 
@@ -34,7 +40,7 @@
 ## 安装运行
 
 * #### 第一步
-    * 克隆项目到本地`git clone https://github.com/Tezectli/WA-Admin.git`
+    * 克隆项目到本地`https://github.com/Tezectli/cloud-doc.git`
 * #### 第二步
     * `npm install`安装依赖
 * #### 第三步
