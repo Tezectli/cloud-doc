@@ -27,12 +27,14 @@
 
 ![](https://ae01.alicdn.com/kf/U66db66e00b4244049ac0d51623e3078f1.jpg) 
 
+* 导入  
 
-#### 导入 
 ![](https://ae01.alicdn.com/kf/Uda8dc9e49e3b4669b89a6698cae525092.jpg)
-#### 新建/编辑 
+* 新建/编辑 
+
 ![](https://ae01.alicdn.com/kf/Ub82611d49412459792e1313e198e6afba.jpg)
-#### 搜索 
+* 搜索 
+
 ![](https://ae01.alicdn.com/kf/Ud166307b996d48129fd5e44061d08f81A.jpg)
 
 
@@ -44,5 +46,5 @@
 * #### 第二步
     * `npm install`安装依赖
 * #### 第三步
-    * 构建管理端 `npm run dev`
+    * `npm run dev`运行项目
 
