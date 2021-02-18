@@ -36,3 +36,19 @@
     width: 100%;
     bottom: 0;
 }
+
+.right-panel {
+    position: relative;
+}
+
+.CodeMirror-scroll {
+    height: 475px !important;
+}
+
+.sync-status {
+    font-size: 12px;
+    color: #959694;
+    position: absolute;
+    bottom: 12px;
+    left: 10px;
+}

@@ -12,7 +12,7 @@ import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
 import defaultFiles from "./utils/defaultFiles";
 import fileHelper from "./utils/fileHelper";
-import { flattenArr, objToArr } from "./utils/helper";
+import { flattenArr, objToArr, timestampToString } from "./utils/helper";
 import BottomBtn from "./components/BottomBtn";
 import TabList from "./components/TabList";
 import { useState, useEffect } from "react";
@@ -30,12 +30,14 @@ const fileStore = new Store({ name: "Files Data" });
 //精简文件的信息结构函数,去掉body和isNew等信息
 const saveFilesToStore = (files) => {
   const filesStoreObj = objToArr(files).reduce((result, file) => {
-    const { id, path, title, createdAt } = file;
+    const { id, path, title, createdAt, isSynced, updatedAt } = file;
     result[id] = {
       id,
       path,
       title,
       createdAt,
+      isSynced,
+      updatedAt,
     };
     return result;
   }, {});
@@ -205,9 +207,11 @@ function App() {
   };
 
   const saveCurrentFile = () => {
-    fileHelper.writeFile(activeFile.path, activeFile.body).then(() => {
+    const { path, body, title } = activeFile;
+    fileHelper.writeFile(path, body).then(() => {
       setUnsavedFilesIDs(unsavedFilesIDs.filter((id) => id !== activeFile.id));
     });
+    ipcRenderer.send("upload-file", { key: `${title}.md`, path });
   };
 
   //导入文件
@@ -259,10 +263,24 @@ function App() {
         // console.log(importFilesArr);
       });
   };
+  const activeFileUploaded = () => {
+    const { id } = activeFile;
+    const modifiedFile = {
+      ...files[id],
+      isSynced: true,
+      updatedAt: new Date().getTime(),
+    };
+    // console.log(modifiedFile.updatedAt);
+
+    const newFiles = { ...files, [id]: modifiedFile };
+    setFiles(newFiles);
+    saveFilesToStore(newFiles);
+  };
   useIpcRenderer({
     "create-new-file": createNewFile,
     "import-file": importFiles,
     "save-edit-file": saveCurrentFile,
+    "active-file-uploaded": activeFileUploaded,
   });
   return (
     <div className="App container-fluid px-0">
@@ -321,6 +339,11 @@ function App() {
                   minHeight: "475px",
                 }}
               />
+              {true && (
+                <span className="sync-status">
+                  已同步，上次同步时间{timestampToString(activeFile.updatedAt)}
+                </span>
+              )}
               {/* <BottomBtn
                 text="保存"
                 colorClass="btn-secondary"
