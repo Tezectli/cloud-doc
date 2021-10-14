@@ -181,7 +181,7 @@ function App() {
   const fileListArr = searchedFiles.length > 0 ? searchedFiles : filesArr;
   //新建文件方法
   const createNewFile = () => {
-    console.log("新建");
+    // console.log("新建");
     const newID = uuidv4();
     //1.旧方法
     // const newFiles = [
@@ -216,7 +216,7 @@ function App() {
 
   //导入文件
   const importFiles = () => {
-    console.log("导入");
+    // console.log("导入");
     remote.dialog
       .showOpenDialog({
         title: "选择导入的Markdown文件",
@@ -233,7 +233,7 @@ function App() {
         // console.log(res.filePaths)
         console.log(paths.filePaths);
         if (true) {
-          console.log("gik");
+          // console.log("gik");
           const filteredPaths = paths.filePaths.filter((path) => {
             const alreadyAdded = Object.values(files).find((file) => {
               return file.path === path;
@@ -276,6 +276,7 @@ function App() {
     setFiles(newFiles);
     saveFilesToStore(newFiles);
   };
+  //ipcrener.on监听事件菜单栏事件触发对应函数的封装
   useIpcRenderer({
     "create-new-file": createNewFile,
     "import-file": importFiles,

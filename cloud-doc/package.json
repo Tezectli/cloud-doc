@@ -3,6 +3,11 @@
     "version": "0.1.0",
     "main": "main.js",
     "private": true,
+    "author": {
+        "name": "Chen",
+        "email": "604961576@qq.com"
+    },
+    "repository": "https://github.com/Tezectli/cloud-doc.git",
     "dependencies": {
         "@fortawesome/fontawesome": "^1.1.8",
         "@fortawesome/fontawesome-free-solid": "^5.0.13",
@@ -17,7 +22,6 @@
         "bootstrap": "^4.6.0",
         "classnames": "^2.2.6",
         "concurrently": "^5.3.0",
-        "electron": "^11.2.0",
         "electron-is-dev": "^1.2.0",
         "electron-store": "^4.0.0",
         "node-sass": "^4.14.1",
@@ -36,7 +40,71 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "dev": "concurrently \"wait-on http://localhost:3000 && electron .\" \"npm start\""
+        "dev": "concurrently \"wait-on http://localhost:3000 && electron .\" \"npm start\"",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder"
+    },
+    "build": {
+        "appId": "CloudDoc",
+        "productName": "七牛云文档",
+        "copyright": "Copyright © 2021 ${author}",
+        "extends": null,
+        "files": [
+            "build/**/*",
+            "node_modules/**/*",
+            "settings/**/*",
+            "package.json",
+            "main.js",
+            "src/menuTemplate.js",
+            "./src/AppWindow.js",
+            "./src/utils/QiniuManager.js"
+        ],
+        "directories": {
+            "buildResources": "assets"
+        },
+        "extraMetadata": {
+            "main": "./build/main.js"
+        },
+        "publish": [
+            "github"
+        ],
+        "extends": null,
+        "mac": {
+            "category": "public.app-category.productivity",
+            "artifactName": "${productName}-${version}-${arch}.${ext}"
+        },
+        "dmg": {
+            "iconSize": 100,
+            "contents": [{
+                    "x": 380,
+                    "y": 280,
+                    "type": "link",
+                    "path": "/Applications"
+                },
+                {
+                    "x": 110,
+                    "y": 280,
+                    "type": "file"
+                }
+            ],
+            "window": {
+                "width": 500,
+                "height": 500
+            }
+        },
+        "win": {
+            "target": [
+                "msi",
+                "nsis"
+            ],
+            "artifactName": "${productName}-Web-Setup-${version}.${ext}",
+            "publisherName": "Chen"
+        },
+        "nsis": {
+            "allowToChangeInstallationDirectory": true,
+            "oneClick": false,
+            "perMachine": false
+        }
     },
     "eslintConfig": {
         "extends": [
@@ -57,6 +125,7 @@
         ]
     },
     "devDependencies": {
-        "devtron": "^1.4.0"
+        "devtron": "^1.4.0",
+        "electron-builder": "^22.9.1"
     }
 }

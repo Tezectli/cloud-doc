@@ -34,7 +34,9 @@ app.on("ready", () => {
       enableRemoteModule: true,
     },
   };
-  const urlLocation = isDev ? "http://localhost:3000" : "my";
+  const urlLocation = isDev
+    ? "http://localhost:3000"
+    : `file://${path.join(__dirname, "./build/index.html")}`;
   mainWindow = new AppWindow(mainWindowConfig, urlLocation);
   mainWindow.on("closed", () => {
     mainWindow = null;
